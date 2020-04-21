@@ -1,0 +1,129 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?1p2144');
+  src:  url('fonts/icomoon.eot?1p2144#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?1p2144') format('truetype'),
+    url('fonts/icomoon.woff?1p2144') format('woff'),
+    url('fonts/icomoon.svg?1p2144#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-A:before {
+  content: "\e900";
+}
+.icon-book:before {
+  content: "\e901";
+}
+.icon-book1:before {
+  content: "\e902";
+}
+.icon-book2:before {
+  content: "\e903";
+}
+.icon-bright:before {
+  content: "\e904";
+}
+.icon-clock:before {
+  content: "\e905";
+}
+.icon-cn:before {
+  content: "\e906";
+}
+.icon-condition:before {
+  content: "\e907";
+}
+.icon-cross:before {
+  content: "\e908";
+}
+.icon-cross1:before {
+  content: "\e909";
+}
+.icon-down:before {
+  content: "\e90a";
+}
+.icon-down1:before {
+  content: "\e90b";
+}
+.icon-downloadFromCloud:before {
+  content: "\e90c";
+}
+.icon-earphone:before {
+  content: "\e90d";
+}
+.icon-en:before {
+  content: "\e90e";
+}
+.icon-goBack:before {
+  content: "\e90f";
+}
+.icon-left:before {
+  content: "\e910";
+}
+.icon-manage:before {
+  content: "\e911";
+}
+.icon-more:before {
+  content: "\e912";
+}
+.icon-moveOn:before {
+  content: "\e913";
+}
+.icon-pause:before {
+  content: "\e914";
+}
+.icon-plus:before {
+  content: "\e915";
+}
+.icon-right:before {
+  content: "\e916";
+}
+.icon-saveAs:before {
+  content: "\e917";
+}
+.icon-search:before {
+  content: "\e918";
+}
+.icon-speaker:before {
+  content: "\e919";
+}
+.icon-start:before {
+  content: "\e91a";
+}
+.icon-tag2:before {
+  content: "\e91b";
+}
+.icon-tick:before {
+  content: "\e91c";
+}
+.icon-tick1:before {
+  content: "\e91d";
+}
+.icon-up:before {
+  content: "\e91e";
+}
+.icon-upload:before {
+  content: "\e91f";
+}
+.icon-uploadToCloud:before {
+  content: "\e920";
+}
+.icon-user:before {
+  content: "\e921";
+}
