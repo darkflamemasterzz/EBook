@@ -1,24 +1,14 @@
 <template>
   <div id="app">
-    <div class="text">text</div>
     <router-view/>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-
   export default {
-    computed: {
-      ...mapGetters(['test'])
-    },
-    mounted () {
-      this.$store.dispatch('setTest', 10).then(() => {
-        console.log(this.test)
-      })
-    }
+
   }
-  // rem自适应布局
+  // rem自适应布局（让根元素的font-size随着屏幕宽度的变化而变化）
   document.addEventListener('DOMContentLoaded', () => {
     const html = document.querySelector('html')
     let fontSize = window.innerWidth / 10
@@ -29,7 +19,9 @@
 
 <style lang="scss" scoped>
 @import "./assets/styles/global.scss";
-.text{
-  font-size: px2rem(40);
+#app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 </style>
