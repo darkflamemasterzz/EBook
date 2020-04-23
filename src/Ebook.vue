@@ -1,43 +1,47 @@
 <template>
 <div class="ebook">
-    <div class="title-wrapper">
-        <div class="left">
-            <span class="icon-left icon"></span>
+    <transition name="slide-down">
+        <div class="title-wrapper" v-show="ifTitleAndMenuShow">
+            <div class="left">
+                <span class="icon-left icon"></span>
+            </div>
+            <div class="right">
+                <div class="icon-wrapper">
+                    <span class="icon-cart icon"></span>
+                </div>
+                <div class="icon-wrapper">
+                    <span class="icon-user icon"></span>
+                </div>
+                <div class="icon-wrapper">
+                    <span class="icon-more icon"></span>
+                </div>
+            </div>
         </div>
-        <div class="right">
-            <div class="icon-wrapper">
-                <span class="icon-cart icon"></span>
-            </div>
-            <div class="icon-wrapper">
-                <span class="icon-user icon"></span>
-            </div>
-            <div class="icon-wrapper">
-                <span class="icon-more icon"></span>
-            </div>
-        </div>
-    </div>
+    </transition>
     <div class="read-wrapper">
         <div id="read"></div>
         <div class="mask">
             <div class="left" @click="prevPage"></div>
-            <div class="center"></div>
+            <div class="center" @click="toggleTitleAndMenu"></div>
             <div class="right" @click="nextPage"></div>
         </div>
     </div>
-    <div class="menu-wrapper">
-        <div class="icon-wrapper">
-            <span class="icon-manage icon"></span>
+    <transition name="slide-up">
+        <div class="menu-wrapper" v-show="ifTitleAndMenuShow">
+            <div class="icon-wrapper">
+                <span class="icon-manage icon"></span>
+            </div>
+            <div class="icon-wrapper">
+                <span class="icon-progress icon"></span>
+            </div>
+            <div class="icon-wrapper">
+                <span class="icon-bright icon"></span>
+            </div>
+            <div class="icon-wrapper">
+                <span class="icon-A icon"></span>
+            </div>
         </div>
-        <div class="icon-wrapper">
-            <span class="icon-progress icon"></span>
-        </div>
-        <div class="icon-wrapper">
-            <span class="icon-bright icon"></span>
-        </div>
-        <div class="icon-wrapper">
-            <span class="icon-A icon"></span>
-        </div>
-    </div>
+    </transition>
 </div>
 </template>
 
@@ -50,14 +54,17 @@ export default {
   name: "Ebook",
   data () {
     return {
+        ifTitleAndMenuShow: false
     }
   },
   methods: {
+      toggleTitleAndMenu() {
+          this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow
+      },
       // 电子书解析和渲染
       showEpub() {
           // 生成book对象
           this.book = new Epub(DOWNLOAD_URL)
-          console.log(this.book)
           // 通过Book.renderTo生成Rendition
           this.rendition = this.book.renderTo('read', {
               width: window.innerWidth,
