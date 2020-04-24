@@ -9,7 +9,7 @@
             <div class="right" @click="nextPage"></div>
         </div>
     </div>
-    <MenuBar :ifTitleAndMenuShow="ifTitleAndMenuShow" ref="MenuBar"></MenuBar>
+    <MenuBar :ifTitleAndMenuShow="ifTitleAndMenuShow" :fontSizeList="fontSizeList" ref="MenuBar"></MenuBar>
 </div>
 </template>
 
@@ -28,7 +28,8 @@ export default {
   },
   data () {
     return {
-        ifTitleAndMenuShow: false
+        ifTitleAndMenuShow: false,
+        fontSizeList: [12,14,16,18,20,22,24]
     }
   },
   methods: {
