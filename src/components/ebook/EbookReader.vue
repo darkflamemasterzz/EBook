@@ -9,7 +9,18 @@
             <div class="right" @click="nextPage"></div>
         </div>
     </div>
-    <MenuBar :ifTitleAndMenuShow="ifTitleAndMenuShow" :fontSizeList="fontSizeList" ref="MenuBar"></MenuBar>
+    <MenuBar 
+        :ifTitleAndMenuShow="ifTitleAndMenuShow" 
+        :fontSizeList="fontSizeList" 
+        :defaultFontSize="defaultFontSize"
+        @setFontSize="setFontSize"
+        ref="MenuBar"
+        :themeList="themeList"
+        :defaultTheme="defaultTheme"
+        @setTheme="setTheme"
+        :bookAvailable="bookAvailable"
+        @onProgressChange="onProgressChange"
+    ></MenuBar>
 </div>
 </template>
 
@@ -29,7 +40,44 @@ export default {
   data () {
     return {
         ifTitleAndMenuShow: false,
-        fontSizeList: [12,14,16,18,20,22,24]
+        fontSizeList: [12,14,16,18,20,22,24],
+        defaultFontSize: 16,
+        themeList: [
+            {
+                name: 'default',
+                style: {
+                    body: {
+                        'color': '#000', 'background': '#fff'
+                    }
+                }
+            },
+            {
+                name: 'eye',
+                style: {
+                    body: {
+                        'color': '#000', 'background': '#ceeaba'
+                    }
+                }
+            },
+            {
+                name: 'night',
+                style: {
+                    body: {
+                        'color': '#fff', 'background': '#000'
+                    }
+                }
+            },
+            {
+                name: 'gold',
+                style: {
+                    body: {
+                        'color': '#000', 'background': 'rgb(241,236,226)'
+                    }
+                }
+            }
+        ],
+        defaultTheme: 0,
+        bookAvailable: false
     }
   },
   methods: {
@@ -50,6 +98,20 @@ export default {
           })
           // 通过Rendition.display渲染电子书
           this.rendition.display()
+          // 获取Theme对象
+          this.theme = this.rendition.themes
+          // 设置为默认字号
+          this.setFontSize(this.defaultFontSize)
+          // 设置主题
+          this.registerTheme()
+          this.setTheme(this.defaultTheme)
+          // 电子书进度定位
+          this.book.ready.then(() => {
+              return this.book.locations.generate()
+          }).then(result => {
+              this.locations = this.book.locations
+              this.bookAvailable = true
+          })
       },
       // 向前翻页
       prevPage() {
@@ -62,6 +124,27 @@ export default {
           if (this.rendition) {
               this.rendition.next()
           }
+      },
+      setFontSize(fontSize) {
+          this.defaultFontSize = fontSize
+          if (this.theme){
+              this.theme.fontSize(fontSize + 'px')
+          }
+      },
+      registerTheme() {
+          this.themeList.forEach(theme => {
+              this.theme.register(theme.name, theme.style)
+          })
+      },
+      setTheme(index) {
+          this.theme.select(this.themeList[index].name)
+          this.defaultTheme = index
+      },
+      // progress 进度条的数值（0-100）
+      onProgressChange(progress) {
+          const percentage = progress / 100
+          const location = percentage > 0 ? this.locations.cfiFromPercentage(percentage) : 0
+          this.rendition.display(location)
       }
   },
   mounted() {
