@@ -6,7 +6,7 @@
                 v-show="ifTitleAndMenuShow"
             >
                 <div class="icon-wrapper">
-                    <span class="icon-manage icon"></span>
+                    <span class="icon-manage icon" @click="showSetting(3)"></span>
                 </div>
                 <div class="icon-wrapper">
                     <span class="icon-progress icon" @click="showSetting(2)"></span>
@@ -63,32 +63,55 @@
                 </div>
             </div>
         </transition>
+        <ContentView :ifShowContent="ifShowContent"
+                     v-show="ifShowContent"
+                     :navigation="navigation"
+                     :bookAvailable="bookAvailable"
+                     @jumpTo="jumpTo"
+        ></ContentView>
+        <transition name="fade">
+            <div class="content-mask"
+                 v-show="ifShowContent"
+                 @click="hideContent"
+            ></div>
+        </transition>
     </div>
 </template>
 
 <script>
 /* eslint-disable*/
+import ContentView from './ContentView'
 export default {
   name: "MenuBar",
+  components: {
+      ContentView
+  },
   props: {
       ifTitleAndMenuShow: Boolean,
       fontSizeList: Array,
       defaultFontSize: Number,
       themeList: Array,
       defaultTheme: Number,
-      bookAvailable: Boolean
+      bookAvailable: Boolean,
+      navigation: Object
   },
   data () {
     return {
         ifSettingShow: false,
         showTag: 1,
-        progress: 0
+        progress: 0,
+        ifShowContent: false
     }
   },
   methods: {
       showSetting(tag) {
-          this.ifSettingShow = true
           this.showTag = tag
+          if (this.showTag === 3) {
+              this.ifSettingShow = false
+              this.ifShowContent = true
+          } else {
+              this.ifSettingShow = true
+          }
       },
       hideSetting() {
           this.ifSettingShow = false
@@ -105,6 +128,12 @@ export default {
       },
       onProgressChange(progress) {
           this.$emit('onProgressChange', progress)
+      },
+      hideContent() {
+          this.ifShowContent = false
+      },
+      jumpTo(target) {
+          this.$emit('jumpTo', target)
       }
   }
 }
@@ -266,6 +295,16 @@ export default {
                 border: px2rem(1) solid #ddd
             }
         }
+    }
+    .content-mask{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 101;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        background: rgba(51,51,51,.8)
     }
     .hide-box-shadow{
         box-shadow:none;

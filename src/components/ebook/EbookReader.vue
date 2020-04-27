@@ -20,6 +20,8 @@
         @setTheme="setTheme"
         :bookAvailable="bookAvailable"
         @onProgressChange="onProgressChange"
+        :navigation="navigation"
+        @jumpTo="jumpTo"
     ></MenuBar>
 </div>
 </template>
@@ -77,7 +79,8 @@ export default {
             }
         ],
         defaultTheme: 0,
-        bookAvailable: false
+        bookAvailable: false,
+        navigation: {}
     }
   },
   methods: {
@@ -105,8 +108,9 @@ export default {
           // 设置主题
           this.registerTheme()
           this.setTheme(this.defaultTheme)
-          // 电子书进度定位
+          // 电子书进度定位、目录导航
           this.book.ready.then(() => {
+              this.navigation = this.book.navigation
               return this.book.locations.generate()
           }).then(result => {
               this.locations = this.book.locations
@@ -145,6 +149,16 @@ export default {
           const percentage = progress / 100
           const location = percentage > 0 ? this.locations.cfiFromPercentage(percentage) : 0
           this.rendition.display(location)
+      },
+      hideTitleAndMenu() {
+          this.ifTitleAndMenuShow = false
+          this.$refs.MenuBar.hideSetting()
+          this.$refs.MenuBar.hideContent()
+      },
+      //根据链接跳转到制定位置
+      jumpTo(href) {
+          this.rendition.display(href)
+          this.hideTitleAndMenu()
       }
   },
   mounted() {
