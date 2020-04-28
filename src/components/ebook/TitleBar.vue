@@ -1,8 +1,8 @@
 <template>
     <transition name="slide-down">
-        <div class="title-wrapper" v-show="ifTitleAndMenuShow">
+        <div class="title-wrapper" v-show="menuVisible">
             <div class="left">
-                <span class="icon-left icon"></span>
+                <span class="icon-left icon" @click="back"></span>
             </div>
             <div class="right">
                 <div class="icon-wrapper">
@@ -21,15 +21,19 @@
 
 <script>
 /* eslint-disable*/
+import { ebookMixin } from '../../utils/mixin'
 export default {
   name: "TitleBar",
-  props: {
-      ifTitleAndMenuShow: Boolean
-  },
   data () {
     return {
         
     }
+  },
+  mixins: [ebookMixin],
+  methods: {
+      back() {
+          console.log('back')
+      }
   }
 }
 </script>

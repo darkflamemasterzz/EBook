@@ -1,15 +1,14 @@
 const book = {
     state: {
-        filePATH: ''
+        filePATH: '',
+        menuVisible: false
     },
     mutations: {
         SET_FILEPATH: (state, filePath) => {
             state.filePath = filePath
-        }
-    },
-    actions: {
-        setFilePath: ({ commit, state }, filePath) => {
-          return commit('SET_FILEPATH', filePath)
+        },
+        SET_MENUVISIBLE: (state, menuVisible) => {
+            state.menuVisible = menuVisible
         }
     },
     modules: {

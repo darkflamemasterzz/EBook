@@ -2,8 +2,8 @@
     <div class="menu-bar">
         <transition name="slide-up">
             <div class="menu-wrapper"
-                :class="{'hide-box-shadow': ifSettingShow || !ifTitleAndMenuShow}"
-                v-show="ifTitleAndMenuShow"
+                :class="{'hide-box-shadow': ifSettingShow || !menuVisible}"
+                v-show="menuVisible"
             >
                 <div class="icon-wrapper">
                     <span class="icon-manage icon" @click="showSetting(3)"></span>
@@ -81,13 +81,13 @@
 <script>
 /* eslint-disable*/
 import ContentView from './ContentView'
+import { ebookMixin } from '../../utils/mixin'
 export default {
   name: "MenuBar",
   components: {
       ContentView
   },
   props: {
-      ifTitleAndMenuShow: Boolean,
       fontSizeList: Array,
       defaultFontSize: Number,
       themeList: Array,
@@ -95,6 +95,7 @@ export default {
       bookAvailable: Boolean,
       navigation: Object
   },
+  mixins: [ebookMixin],
   data () {
     return {
         ifSettingShow: false,

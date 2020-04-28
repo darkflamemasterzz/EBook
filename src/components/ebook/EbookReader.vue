@@ -1,6 +1,6 @@
 <template>
 <div class="ebook">
-    <TitleBar :ifTitleAndMenuShow="ifTitleAndMenuShow"></TitleBar>
+    <TitleBar></TitleBar>
     <div class="read-wrapper">
         <div id="read"></div>
         <div class="mask">
@@ -10,7 +10,6 @@
         </div>
     </div>
     <MenuBar 
-        :ifTitleAndMenuShow="ifTitleAndMenuShow" 
         :fontSizeList="fontSizeList" 
         :defaultFontSize="defaultFontSize"
         @setFontSize="setFontSize"
@@ -27,7 +26,7 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
+import { ebookMixin } from '../../utils/mixin'
 import TitleBar from './TitleBar'
 import MenuBar from './MenuBar'
 import Epub from 'epubjs'
@@ -40,10 +39,11 @@ export default {
       TitleBar,
       MenuBar
   },
+  mixins: [ebookMixin],
   data () {
     return {
         filePath: '',
-        ifTitleAndMenuShow: false,
+        // ifTitleAndMenuShow: false, // 这个值应该由Vuex的menuVisible控制
         fontSizeList: [12,14,16,18,20,22,24],
         defaultFontSize: 16,
         themeList: [
@@ -85,24 +85,21 @@ export default {
         navigation: {}
     }
   },
-  computed: {
-    //   ...mapGetters(['filePath'])
-  },
   methods: {
        resolvedFilePath() {
             const BASE_URL = 'http://localhost:8081/epub/'
             // resolved file path from dynamic router
             const fileName = this.$route.params.filePath.split("|").join('/')
             const DOWNLOAD_URL = BASE_URL + fileName + '.epub'
-            console.log(DOWNLOAD_URL)
             this.filePath = DOWNLOAD_URL
             // 把filePath存到vuex
             // this.$store.dispatch('setFilePath', filePath)
             return DOWNLOAD_URL
       },
       toggleTitleAndMenu() {
-          this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow
-          if (!this.ifTitleAndMenuShow){
+        //   this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow
+          this.setMenuVisible(!this.menuVisible)  
+          if (!this.menuVisible){
               this.$refs.MenuBar.hideSetting()
           }
       },
@@ -137,12 +134,14 @@ export default {
       prevPage() {
           if (this.rendition) {
               this.rendition.prev()
+              this.hideTitleAndMenu()
           }
       },
       // 向后翻页
       nextPage() {
           if (this.rendition) {
               this.rendition.next()
+              this.hideTitleAndMenu()
           }
       },
       setFontSize(fontSize) {
@@ -167,9 +166,10 @@ export default {
           this.rendition.display(location)
       },
       hideTitleAndMenu() {
-          this.ifTitleAndMenuShow = false
-          this.$refs.MenuBar.hideSetting()
-          this.$refs.MenuBar.hideContent()
+        //   this.ifTitleAndMenuShow = false
+        this.setMenuVisible(false) 
+        this.$refs.MenuBar.hideSetting()
+        this.$refs.MenuBar.hideContent()
       },
       //根据链接跳转到制定位置
       jumpTo(href) {
