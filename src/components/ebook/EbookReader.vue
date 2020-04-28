@@ -27,20 +27,22 @@
 </template>
 
 <script>
+// import { mapGetters } from 'vuex'
 import TitleBar from './TitleBar'
 import MenuBar from './MenuBar'
 import Epub from 'epubjs'
-const DOWNLOAD_URL = 'http://localhost:8081/epub/cs/java.epub'
+// const DOWNLOAD_URL = 'http://localhost:8081/epub/cs/java.epub'
 global.ePub = Epub
 /* eslint-disable*/
 export default {
-  name: "Ebook",
+  name: "EbookReader",
   components: {
       TitleBar,
       MenuBar
   },
   data () {
     return {
+        filePath: '',
         ifTitleAndMenuShow: false,
         fontSizeList: [12,14,16,18,20,22,24],
         defaultFontSize: 16,
@@ -83,7 +85,21 @@ export default {
         navigation: {}
     }
   },
+  computed: {
+    //   ...mapGetters(['filePath'])
+  },
   methods: {
+       resolvedFilePath() {
+            const BASE_URL = 'http://localhost:8081/epub/'
+            // resolved file path from dynamic router
+            const fileName = this.$route.params.filePath.split("|").join('/')
+            const DOWNLOAD_URL = BASE_URL + fileName + '.epub'
+            console.log(DOWNLOAD_URL)
+            this.filePath = DOWNLOAD_URL
+            // 把filePath存到vuex
+            // this.$store.dispatch('setFilePath', filePath)
+            return DOWNLOAD_URL
+      },
       toggleTitleAndMenu() {
           this.ifTitleAndMenuShow = !this.ifTitleAndMenuShow
           if (!this.ifTitleAndMenuShow){
@@ -93,7 +109,7 @@ export default {
       // 电子书解析和渲染
       showEpub() {
           // 生成book对象
-          this.book = new Epub(DOWNLOAD_URL)
+          this.book = new Epub(this.resolvedFilePath())
           // 通过Book.renderTo生成Rendition
           this.rendition = this.book.renderTo('read', {
               width: window.innerWidth,

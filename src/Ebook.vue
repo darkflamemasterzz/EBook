@@ -11,11 +11,8 @@ export default {
   name: "Ebook",
   components: {
       EbookReader
-  },
-  data () {
-    return {
-    }
   }
+  
 }
 </script>
 
